@@ -1,3 +1,5 @@
+import org.bson.Document;
+
 import javax.swing.*;
 
 public class JProperty extends JFrame {
@@ -11,6 +13,7 @@ public class JProperty extends JFrame {
         // Initializing Networking Features
         NetworkHandler.init();
         // Setting window properties
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1024,576);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -20,5 +23,9 @@ public class JProperty extends JFrame {
     public static void main(String[] args){
         System.out.println("JProperty!");
         JProperty mainInstance = new JProperty();
+        // listings test
+        for(Document listing: NetworkHandler.getListings(5)){
+            System.out.println(listing.get("name"));
+        }
     }
 }

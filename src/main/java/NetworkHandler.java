@@ -1,14 +1,20 @@
-import com.mongodb.ConnectionString;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.MongoClientSettings;
+import com.mongodb.client.model.Aggregates;
+import org.bson.Document;
+
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class NetworkHandler {
     public static MongoClient mongoClient;
+    public static MongoCollection<Document> listings;
     public static void init(){
         String password = "";
         try{
@@ -24,10 +30,13 @@ public class NetworkHandler {
         mongoClient = MongoClients.create(
                 "mongodb+srv://Armaan:" + password + "@cluster0.dnqxb.mongodb.net/sample_airbnb?retryWrites=true&w=majority");
         MongoDatabase database = mongoClient.getDatabase("sample_airbnb");
-        for (String name : database.listCollectionNames()) {
-            System.out.println(name);
+        listings = database.getCollection("listingsAndReviews");
+    }
+    public static ArrayList<Document> getListings(int numberOfListings){
+        ArrayList<Document> listingsArray = new ArrayList<>();
+        for(Document listing: listings.aggregate(Collections.singletonList(Aggregates.sample(numberOfListings)))){
+            listingsArray.add(listing);
         }
-        System.out.println("d");
-
+        return listingsArray;
     }
 }
