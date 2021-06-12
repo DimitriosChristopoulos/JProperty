@@ -9,7 +9,7 @@ public class JProperty extends JFrame {
         // Contructing frame
         frame = new MyPanel();
         // Initializing Networking Features
-        /*NetworkHandler.init();*/
+        NetworkHandler.init();
         // Setting window properties
         setSize(1024,576);
         setResizable(false);
