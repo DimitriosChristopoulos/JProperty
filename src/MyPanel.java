@@ -1,14 +1,19 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+
 
 public class MyPanel extends JPanel{
 
+    JPanel redPanel = new JPanel();
     JButton button;
-    MyPanel(){
+    MyPanel(JProperty frame){
         // Creating buttons
         button = new JButton();
 
-        this.setSize(1200,800);
+        redPanel.setBackground(Color.red);
+        redPanel.setBounds(0,0,250,250);
+
+        JProperty.frame.add(redPanel);
     }
+
 }
