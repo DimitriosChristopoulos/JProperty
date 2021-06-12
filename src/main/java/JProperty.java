@@ -23,9 +23,5 @@ public class JProperty extends JFrame {
     public static void main(String[] args){
         System.out.println("JProperty!");
         JProperty mainInstance = new JProperty();
-        // listings test
-        for(Document listing: NetworkHandler.getListings(5)){
-            System.out.println(listing.get("name"));
-        }
     }
 }

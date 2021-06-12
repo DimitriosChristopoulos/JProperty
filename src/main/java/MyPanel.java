@@ -1,3 +1,6 @@
+import org.bson.Document;
+import org.bson.types.Decimal128;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -6,10 +9,13 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class MyPanel extends JPanel implements ActionListener {
-
+    // Current properties shown
+    ArrayList<Document> currentProperties = new ArrayList<>();
+    // Panel related things
     JButton mainButton;
     JButton websiteButton;
     JScrollPane scrollPane;
@@ -22,10 +28,10 @@ public class MyPanel extends JPanel implements ActionListener {
 
         // Customizing Buttons
 
-        mainButton.setText("Main Menu");
+        mainButton.setText("Search Listings");
         mainButton.setFocusable(false);
         mainButton.addActionListener(this);
-        mainButton.setForeground(Color.BLUE);
+        //mainButton.setForeground(Color.BLUE);
         mainButton.setBounds(60,30,300,30);
 
         websiteButton.setText("Open Website");
@@ -52,6 +58,20 @@ public class MyPanel extends JPanel implements ActionListener {
         setVisible(true);
     }
 
+    public void airbnbPopulator(String country, int maxPrice){
+        currentProperties.clear();
+        for(Document listing: NetworkHandler.getListings(1000)) {
+            Document addressInfo  = (Document) listing.get("address");
+            System.out.println(addressInfo.get("country"));
+            if(addressInfo.get("country").equals(country) || country.equals("Worldwide")){
+                if(((Decimal128) listing.get("price")).doubleValue() < maxPrice || maxPrice == 0){
+                    currentProperties.add(listing);
+
+                }
+            }
+        }
+    }
+
     @Override
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
@@ -68,7 +88,51 @@ public class MyPanel extends JPanel implements ActionListener {
     {
         if (e.getSource() == mainButton)
         {
-            System.out.println("Hi");
+            // Search tool
+            int selection = JOptionPane.showOptionDialog(this,
+                    "Which database would you like to access?",
+                    "Database Choice",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new String[]{"Airbnb", "Local listings"},"none");
+            //Airbnb selection
+            if(selection == 0){
+                System.out.println("airbnb");
+                String country = (String)JOptionPane.showInputDialog(
+                        this,
+                        "Select the country you would like to search in",
+                        "Country selection",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        new String[]{"Worldwide", "United States", "Spain", "Australia", "Canada", "Turkey", "Portugal", "Brazil", "Hong Kong"},
+                        "Worldwide");
+
+                String maxPriceString = (String)JOptionPane.showInputDialog(
+                        this,
+                        "What is the maximum price per day you are looking for? (Write 0 for no limit)",
+                        "Country selection",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        null,
+                        "0");
+                int maxPrice;
+                try{
+                    maxPrice = Integer.parseInt(maxPriceString);
+                    airbnbPopulator(country, maxPrice);
+                    if(currentProperties.size() == 0){
+                        JOptionPane.showMessageDialog(this, "No properties found matching your search. (Try a higher max price?)");
+                    }
+                }
+                catch(NumberFormatException exception){
+                    JOptionPane.showMessageDialog(this, "Invalid price. (Must be integer)");
+                }
+
+            }
+            // Local houses selection
+            else if (selection == 1){
+                System.out.println("houses");
+            }
         }
     }
 
