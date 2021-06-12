@@ -8,7 +8,7 @@ public class JProperty extends JFrame {
     // Constructor
     public JProperty(){
         super("JProperty"); // Setting the title
-        // Contructing frame
+        // Constructing frame
         frame = new MyPanel();
         // Initializing Networking Features
         NetworkHandler.init();

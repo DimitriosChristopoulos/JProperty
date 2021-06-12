@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,7 @@ public class MyPanel extends JPanel implements ActionListener {
 
     JButton mainButton;
     JButton priceButton;
+    JScrollPane scroll;
 
     public MyPanel(){
         // Creating buttons
@@ -15,19 +17,40 @@ public class MyPanel extends JPanel implements ActionListener {
         priceButton = new JButton();
 
         // Customizing Buttons
-        mainButton.setText("Main");
+
+        mainButton.setText("Main Menu");
         mainButton.setFocusable(false);
         mainButton.addActionListener(this);
         mainButton.setForeground(Color.BLUE);
+        mainButton.setBounds(60,30,300,30);
 
         priceButton.setText("Prices");
         priceButton.setFocusable(false);
 
+        scroll.setSize(100,100);
+
+
+        this.setLayout(null);
+
+        //Adding Buttons
         this.add(mainButton);
         this.add(priceButton);
 
+        scroll.add(this);
+
         // Final Panel Setup
         setVisible(true);
+    }
+
+    @Override
+    public void paintComponent (Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(new Color(0x63b9ff));
+        Stroke oldStroke = g2.getStroke();
+        g2.setStroke(new BasicStroke(3));
+        g2.drawRect(60, 90, 300, 420);
+        g2.setStroke(oldStroke);
     }
 
     @Override
