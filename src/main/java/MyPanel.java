@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +8,6 @@ public class MyPanel extends JPanel implements ActionListener {
 
     JButton mainButton;
     JButton priceButton;
-    JScrollPane scroll;
 
     public MyPanel(){
         // Creating buttons
@@ -27,16 +25,11 @@ public class MyPanel extends JPanel implements ActionListener {
         priceButton.setText("Prices");
         priceButton.setFocusable(false);
 
-        scroll.setSize(100,100);
-
-
         this.setLayout(null);
 
         //Adding Buttons
         this.add(mainButton);
         this.add(priceButton);
-
-        scroll.add(this);
 
         // Final Panel Setup
         setVisible(true);
