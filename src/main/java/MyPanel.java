@@ -8,6 +8,7 @@ public class MyPanel extends JPanel implements ActionListener {
 
     JButton mainButton;
     JButton priceButton;
+    ScrollPanel scrollPanel;
 
     public MyPanel(){
         // Creating buttons
@@ -27,6 +28,9 @@ public class MyPanel extends JPanel implements ActionListener {
 
         this.setLayout(null);
 
+        // Adding scroll panel
+        scrollPanel = new ScrollPanel();
+        this.add(scrollPanel);
         //Adding Buttons
         this.add(mainButton);
         this.add(priceButton);
