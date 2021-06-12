@@ -9,7 +9,7 @@ public class MyPanel extends JPanel implements ActionListener {
     JButton mainButton;
     JButton priceButton;
 
-    MyPanel(JProperty frame){
+    public MyPanel(){
         // Creating buttons
         mainButton = new JButton();
         priceButton = new JButton();
@@ -25,6 +25,9 @@ public class MyPanel extends JPanel implements ActionListener {
 
         this.add(mainButton);
         this.add(priceButton);
+
+        // Final Panel Setup
+        setVisible(true);
     }
 
     @Override

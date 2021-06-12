@@ -7,13 +7,15 @@ public class JProperty extends JFrame {
     public JProperty(){
         super("JProperty"); // Setting the title
         // Contructing frame
-        frame = new MyPanel(this);
+        frame = new MyPanel();
+        // Initializing Networking Features
+        /*NetworkHandler.init();*/
         // Setting window properties
         setSize(1024,576);
         setResizable(false);
         setLocationRelativeTo(null);
-        setVisible(true);
         add(frame);
+        setVisible(true);
     }
     public static void main(String[] args){
         System.out.println("JProperty!");
