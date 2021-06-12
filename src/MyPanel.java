@@ -8,7 +8,7 @@ public class MyPanel extends JPanel{
     MyPanel(){
         // Creating buttons
         button = new JButton();
-        
+
         this.setSize(1200,800);
     }
 }

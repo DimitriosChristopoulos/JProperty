@@ -2,12 +2,12 @@ import javax.swing.*;
 
 public class JProperty extends JFrame {
     // Frame Object
-    MyFrame frame;
+    MyPanel frame;
     // Constructor
     public JProperty(){
         super("JProperty"); // Setting the title
         // Contructing frame
-        frame = new MyFrame();
+        frame = new MyPanel();
         // Setting window properties
         setSize(1024,576);
         setResizable(false);
