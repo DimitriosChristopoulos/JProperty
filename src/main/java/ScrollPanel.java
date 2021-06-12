@@ -3,8 +3,12 @@ import java.awt.*;
 
 public class ScrollPanel extends JPanel {
 
+    JButton testButton;
+
     public ScrollPanel()
     {
+        // Creating Buttons
+        testButton = new JButton();
 
         this.setSize(250,1000);
         this.setPreferredSize(new Dimension(250,1000));
@@ -12,9 +16,12 @@ public class ScrollPanel extends JPanel {
 
         this.setLayout(null);
 
-        JButton testButton = new JButton();
-        testButton.setBounds(0,500,250,100);
-        testButton.setText("shivan's house");
+        // Customizing Buttons
+        testButton.setBounds(20,20,250,30);
+        testButton.setText("Test");
+        testButton.setFocusable(false);
+
+        // Adding Buttons
         this.add(testButton);
 
 
