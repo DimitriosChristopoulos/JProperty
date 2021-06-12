@@ -8,6 +8,7 @@ public class MyPanel extends JPanel implements ActionListener {
 
     JButton mainButton;
     JButton priceButton;
+    JScrollPane scrollPane;
     ScrollPanel scrollPanel;
 
     public MyPanel(){
@@ -28,9 +29,15 @@ public class MyPanel extends JPanel implements ActionListener {
 
         this.setLayout(null);
 
-        // Adding scroll panel
+        // Adding scroll pane
         scrollPanel = new ScrollPanel();
-        this.add(scrollPanel);
+        scrollPane = new JScrollPane(scrollPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setLocation(60, 90);
+        scrollPane.setSize(300,420);
+        this.add(scrollPane);
+
         //Adding Buttons
         this.add(mainButton);
         this.add(priceButton);
