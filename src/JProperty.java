@@ -19,8 +19,4 @@ public class JProperty extends JFrame {
         System.out.println("JProperty!");
         JProperty mainInstance = new JProperty();
     }
-
-    public MyPanel getFrame(){
-        return frame;
-    }
 }

@@ -1,19 +1,39 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-public class MyPanel extends JPanel{
+public class MyPanel extends JPanel implements ActionListener {
 
-    JPanel redPanel = new JPanel();
-    JButton button;
+    JButton mainButton;
+    JButton priceButton;
+
     MyPanel(JProperty frame){
         // Creating buttons
-        button = new JButton();
+        mainButton = new JButton();
+        priceButton = new JButton();
 
-        redPanel.setBackground(Color.red);
-        redPanel.setBounds(0,0,250,250);
+        // Customizing Buttons
+        mainButton.setText("Main");
+        mainButton.setFocusable(false);
+        mainButton.addActionListener(this);
+        mainButton.setForeground(Color.BLUE);
 
-        JProperty.frame.add(redPanel);
+        priceButton.setText("Prices");
+        priceButton.setFocusable(false);
+
+        this.add(mainButton);
+        this.add(priceButton);
+    }
+
+    @Override
+    public void actionPerformed (ActionEvent e)
+    {
+        if (e.getSource() == mainButton)
+        {
+            System.out.println("Hi");
+        }
     }
 
 }
