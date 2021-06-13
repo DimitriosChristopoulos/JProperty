@@ -22,6 +22,9 @@ public class MyPanel extends JPanel implements ActionListener {
     JButton mainButton;
     JButton websiteButton;
     JButton mapButton;
+    JButton addListButton;
+    JButton reviewButton;
+    JButton listButton;
     JScrollPane scrollPane;
     ScrollPanel scrollPanel;
     JTextArea text;
@@ -37,6 +40,9 @@ public class MyPanel extends JPanel implements ActionListener {
         mainButton = new JButton();
         websiteButton = new JButton();
         mapButton = new JButton();
+        addListButton = new JButton();
+        reviewButton = new JButton();
+        listButton = new JButton();
 
         //Creating Text Area
         text = new JTextArea();
@@ -51,6 +57,7 @@ public class MyPanel extends JPanel implements ActionListener {
         mainButton.setForeground(Color.WHITE);
         mainButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         mainButton.setBounds(60,30,300,30);
+        mainButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
         websiteButton.setText("Open Website");
         websiteButton.setFocusable(false);
@@ -60,6 +67,7 @@ public class MyPanel extends JPanel implements ActionListener {
         websiteButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         websiteButton.setBounds(850,500,150,30);
         websiteButton.addActionListener(this);
+        websiteButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
         mapButton.setText("Open Heat Map");
         mapButton.setFocusable(false);
@@ -67,7 +75,35 @@ public class MyPanel extends JPanel implements ActionListener {
         mapButton.setBackground(new Color(59, 89, 182));
         mapButton.setForeground(Color.WHITE);
         mapButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-        mapButton.setBounds(850,30,150,30);
+        mapButton.setBounds(850,15,150,30);
+        mapButton.setBorder(BorderFactory.createRaisedBevelBorder());
+
+        reviewButton.setText("Reviews");
+        reviewButton.setFocusable(false);
+        reviewButton.addActionListener(this);
+        reviewButton.setBackground(new Color(59, 89, 182));
+        reviewButton.setForeground(Color.WHITE);
+        reviewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+        reviewButton.setBounds(680,500,150,30);
+        reviewButton.setBorder(BorderFactory.createRaisedBevelBorder());
+
+        addListButton.setText("Add to my List");
+        addListButton.setFocusable(false);
+        addListButton.addActionListener(this);
+        addListButton.setBackground(new Color(59, 89, 182));
+        addListButton.setForeground(Color.WHITE);
+        addListButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+        addListButton.setBounds(510,500,150,30);
+        addListButton.setBorder(BorderFactory.createRaisedBevelBorder());
+
+        listButton.setText("My List");
+        listButton.setFocusable(false);
+        listButton.addActionListener(this);
+        listButton.setBackground(new Color(59, 89, 182));
+        listButton.setForeground(Color.WHITE);
+        listButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+        listButton.setBounds(850,55,150,30);
+        listButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
         // Customizing Text Area
 
@@ -101,6 +137,9 @@ public class MyPanel extends JPanel implements ActionListener {
         this.add(mainButton);
         this.add(websiteButton);
         this.add(mapButton);
+        this.add(reviewButton);
+        this.add(addListButton);
+        this.add(listButton);
 
         // Adding Text Area
         this.add(text);
@@ -172,7 +211,7 @@ public class MyPanel extends JPanel implements ActionListener {
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(new Color(0x63b9ff));
+        g2.setColor(new Color(0x000000));
         Stroke oldStroke = g2.getStroke();
         g2.setStroke(new BasicStroke(8));
         g2.drawRect(60, 90, 300, 420);
@@ -230,6 +269,7 @@ public class MyPanel extends JPanel implements ActionListener {
                     jDialog.setModal(false);
                     jDialog.setUndecorated(true);
                     jDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                    jDialog.setBackground(new Color (0xfc5858));
                     jDialog.setLocationRelativeTo(null);
                     jDialog.setVisible(true);
                     jDialog.revalidate();
@@ -264,7 +304,7 @@ public class MyPanel extends JPanel implements ActionListener {
         }
         else if (e.getSource() == mapButton)
         {
-            //this.add()
+
         }
     }
 
