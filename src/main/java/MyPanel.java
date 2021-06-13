@@ -490,11 +490,17 @@ public class MyPanel extends JPanel implements ActionListener {
         }
         repaint();
         if (e.getSource() == mapButton) {
-            heatMap = true;
-            setButtonsInvis();
+            heatMap = !heatMap;
+            if (heatMap == false){
+                setButtonsVis();
+            }
+            else{
+                setButtonsInvis();
+                setMapButtonVisible();
+            }
         }
         else{
-            setButtonsvis();
+            setButtonsVis();
         }
         repaint();
     }
@@ -506,12 +512,15 @@ public class MyPanel extends JPanel implements ActionListener {
         text.setVisible(false);
         padding.setVisible(false);
     }
-    public void setButtonsvis(){
+    public void setButtonsVis(){
         for (JButton curButton : allButtons){
             curButton.setVisible(true);
         }
         scrollPane.setVisible(true);
         text.setVisible(true);
         padding.setVisible(true);
+    }
+    public void setMapButtonVisible(){
+        mapButton.setVisible(true);
     }
 }
