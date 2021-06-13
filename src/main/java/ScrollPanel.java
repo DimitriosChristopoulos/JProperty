@@ -1,31 +1,58 @@
+
+import org.bson.Document;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class ScrollPanel extends JPanel {
+public class ScrollPanel extends JPanel implements ActionListener {
 
-    JButton testButton;
+    ArrayList<JButton> buttons = new ArrayList<>();
 
     public ScrollPanel()
     {
-        // Creating Buttons
-        testButton = new JButton();
 
-        this.setSize(250,1000);
-        this.setPreferredSize(new Dimension(250,1000));
-        this.setBackground(Color.red);
+        this.setSize(250,1600);
+        this.setPreferredSize(new Dimension(250,1600));
 
         this.setLayout(null);
 
-        // Customizing Buttons
-        testButton.setBounds(20,20,250,30);
-        testButton.setText("Test");
-        testButton.setFocusable(false);
-
-        // Adding Buttons
-        this.add(testButton);
 
 
         // Final Panel Setup
         setVisible(true);
+    }
+
+    public void updateButtons(ArrayList<Document> newProperties){
+        // Removing old buttons
+        for(JButton button: buttons){
+            remove(button);
+        }
+        buttons.clear();
+        // getting limit of buttons
+        int limit = newProperties.size();
+        if(limit > 50){
+            limit = 50;
+        }
+        // Adding new buttons
+        for(int i = 0; i < limit; i++){
+            JButton currentButton = new JButton();
+            currentButton.setBounds(20,20 + (i*30),250,30);
+            currentButton.setText((String)newProperties.get(i).get("name"));
+            currentButton.setFocusable(false);
+            currentButton.setActionCommand(Integer.toString(i));
+            add(currentButton);
+            buttons.add(currentButton);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (buttons.contains(e.getSource())){
+            System.out.println(e.getActionCommand());
+        }
+
     }
 }

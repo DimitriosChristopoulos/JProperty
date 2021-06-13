@@ -62,14 +62,18 @@ public class MyPanel extends JPanel implements ActionListener {
         currentProperties.clear();
         for(Document listing: NetworkHandler.getListings(1000)) {
             Document addressInfo  = (Document) listing.get("address");
-            System.out.println(addressInfo.get("country"));
             if(addressInfo.get("country").equals(country) || country.equals("Worldwide")){
                 if(((Decimal128) listing.get("price")).doubleValue() < maxPrice || maxPrice == 0){
                     currentProperties.add(listing);
-
                 }
             }
         }
+        updateScrollPanel();
+    }
+
+    public void updateScrollPanel(){
+        scrollPanel.updateButtons(currentProperties);
+
     }
 
     @Override
