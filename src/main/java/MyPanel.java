@@ -335,6 +335,7 @@ public class MyPanel extends JPanel implements ActionListener {
                 g2.setStroke(new java.awt.BasicStroke(5));
                 g2.drawRect(595, 370, 192, 120);
             }
+            g2.setStroke(new java.awt.BasicStroke(1));
         }
         else{
             g2.drawImage(map, 0, 0, this);
