@@ -52,7 +52,7 @@ public class MyPanel extends JPanel implements ActionListener {
 
         this.setLayout(null);
         try{
-            titleBar = ImageIO.read(new File("Images/jProperty.png"));
+            titleBar = ImageIO.read(new File("Images/jProperty1.png"));
         }
         catch(IOException exception){
             exception.printStackTrace();
@@ -277,12 +277,15 @@ public class MyPanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
+
         if (!heatMap) {
             g2.setColor(new Color(0x000000));
             Stroke oldStroke = g2.getStroke();
             g2.setStroke(new BasicStroke(8));
             g2.drawRect(60, 90, 300, 420);
             g2.setStroke(oldStroke);
+           // g2.setColor(new Color(0xfcefef));
+            //g2.drawRect(60,90,300,420);
             if (currentImage != null) {
                 g2.drawImage(currentImage, 500, 300, this);
             }
@@ -290,7 +293,7 @@ public class MyPanel extends JPanel implements ActionListener {
         else{
             g2.drawImage(map, 0, 0, this);
         }
-        g2.drawImage(titleBar, 512, 0, this);
+        g2.drawImage(titleBar, 420, -10, this);
         g2.drawImage(currentImage, 500, 0, this);
 
     }
