@@ -1,14 +1,10 @@
 import org.bson.Document;
 import org.bson.types.Decimal128;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -19,28 +15,60 @@ public class MyPanel extends JPanel implements ActionListener {
     // Panel related things
     JButton mainButton;
     JButton websiteButton;
+    JButton mapButton;
     JScrollPane scrollPane;
     ScrollPanel scrollPanel;
 
+    // Labels for the text area
+
+    JLabel name;
+
     public MyPanel(){
+
+        this.setLayout(null);
+
+        // Setting background color
+        this.setBackground(new Color(0xa3d5ff));
+
         // Creating buttons
         mainButton = new JButton();
         websiteButton = new JButton();
+        mapButton = new JButton();
+
+        // Creating labels
+        name = new JLabel("Property Name");
 
         // Customizing Buttons
 
         mainButton.setText("Search Listings");
         mainButton.setFocusable(false);
         mainButton.addActionListener(this);
-        //mainButton.setForeground(Color.BLUE);
+        mainButton.setBackground(new Color(59, 89, 182));
+        mainButton.setForeground(Color.WHITE);
+        mainButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         mainButton.setBounds(60,30,300,30);
 
         websiteButton.setText("Open Website");
         websiteButton.setFocusable(false);
         websiteButton.setForeground(Color.BLUE);
+        websiteButton.setBackground(new Color(59, 89, 182));
+        websiteButton.setForeground(Color.WHITE);
+        websiteButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         websiteButton.setBounds(850,500,150,30);
 
-        this.setLayout(null);
+        mapButton.setText("Open Heat Map");
+        mapButton.setFocusable(false);
+        mapButton.addActionListener(this);
+        mapButton.setBackground(new Color(59, 89, 182));
+        mapButton.setForeground(Color.WHITE);
+        mapButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+        mapButton.setBounds(850,30,150,30);
+
+        // Setting Labels
+
+        name.setLocation(440,90);
+        name.setSize(700,40);
+        name.setFont(new Font ("Tahoma", Font.BOLD, 24));
 
         // Adding scroll pane
         scrollPanel = new ScrollPanel(this);
@@ -51,9 +79,14 @@ public class MyPanel extends JPanel implements ActionListener {
         scrollPane.setSize(300,420);
         this.add(scrollPane);
 
-        //Adding Buttons
+        // Adding Buttons
         this.add(mainButton);
         this.add(websiteButton);
+        this.add(mapButton);
+
+        // Adding Labels
+
+        this.add(name);
 
         // Final Panel Setup
         setVisible(true);
@@ -61,6 +94,7 @@ public class MyPanel extends JPanel implements ActionListener {
 
     public void selectProperty(int index){
         selectedProperty = index;
+        name.setText("<html>" + currentProperties.get(selectedProperty).get("name") + "</html>");
     }
 
     public void airbnbPopulator(String country, int maxPrice){
@@ -80,6 +114,7 @@ public class MyPanel extends JPanel implements ActionListener {
         scrollPanel.updateButtons(currentProperties);
 
     }
+
 
     @Override
     public void paintComponent (Graphics g) {
@@ -142,6 +177,10 @@ public class MyPanel extends JPanel implements ActionListener {
             else if (selection == 1){
                 System.out.println("houses");
             }
+        }
+        else if (e.getSource() == mapButton)
+        {
+            //this.add()
         }
     }
 

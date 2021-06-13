@@ -1,16 +1,14 @@
-import org.bson.Document;
-
 import javax.swing.*;
-import java.awt.*;
 
-public class JProperty extends JFrame {
-    // Frame Object
-    MyPanel frame;
-    // Constructor
-    public JProperty(){
-        super("JProperty"); // Setting the title
+public class HeatMapFrame extends JFrame {
+
+    HeatMapPanel mapFrame;
+
+    public HeatMapFrame()
+    {
+        super("Heat Map"); // Setting the title
         // Constructing frame
-        frame = new MyPanel();
+        mapFrame = new HeatMapPanel();
         // Initializing Networking Features
         NetworkHandler.init();
         // Setting window properties
@@ -18,9 +16,8 @@ public class JProperty extends JFrame {
         setSize(1024,576);
         setResizable(false);
         setLocationRelativeTo(null);
-        add(frame);
+        add(mapFrame);
         setVisible(true);
     }
-    public static void main(String[] args){
-    }
+
 }
