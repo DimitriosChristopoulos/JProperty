@@ -82,10 +82,9 @@ public class PropertyScraper{
 
                 lineCounter++;
             }
-            for(House house: houseList){
-               // System.out.println(254343);
-                System.out.println(house.getInfo());
-                System.out.println();
+            for(int i=0; i<100;i++){
+               // System.out.println(house.getInfo());
+                //System.out.println();
             }
 
         }
@@ -94,5 +93,8 @@ public class PropertyScraper{
             System.out.println("error");
             System.exit(1);
         }
+    }
+    public static float randint(int low, int high){
+        return (float)((int)(Math.random()*(high-low+1)+low));
     }
 }

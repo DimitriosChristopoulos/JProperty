@@ -331,10 +331,8 @@ public class MyPanel extends JPanel implements ActionListener {
             g2.setStroke(new BasicStroke(8));
             g2.drawRect(60, 90, 300, 420);
             g2.setStroke(oldStroke);
-            g2.drawImage(titleBar, 512, 0, this);
             g2.drawImage(currentImage, 500, 0, this);
-           // g2.setColor(new Color(0xfcefef));
-            //g2.drawRect(60,90,300,420);
+            g2.drawImage(titleBar, 420, -10, this);
             if (currentImage != null) {
                 g2.drawImage(currentImage, 500, 300, this);
             }
@@ -345,8 +343,8 @@ public class MyPanel extends JPanel implements ActionListener {
                 g2.drawImage(pinPic,xPositions.get(i),yPositions.get(i),this);
             }
         }
-        g2.drawImage(titleBar, 420, -10, this);
-        //g2.drawImage(currentImage, 500, 0, this);
+
+        //hideScrollPane();
 
     }
 
