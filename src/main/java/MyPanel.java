@@ -23,6 +23,7 @@ public class MyPanel extends JPanel implements ActionListener {
     JScrollPane scrollPane;
     ScrollPanel scrollPanel;
     JTextArea text;
+    JTextArea padding;
     public MyPanel(){
 
         this.setLayout(null);
@@ -36,7 +37,8 @@ public class MyPanel extends JPanel implements ActionListener {
         mapButton = new JButton();
 
         //Creating Text Area
-        text = new JTextArea("Drugs");
+        text = new JTextArea();
+        padding = new JTextArea();
 
         // Customizing Buttons
 
@@ -66,14 +68,22 @@ public class MyPanel extends JPanel implements ActionListener {
         mapButton.setBounds(850,30,150,30);
 
         // Customizing Text Area
+
+        padding.setBounds(400,100,580,380);
+        padding.setBorder(null);
+        padding.setBackground(new Color(0xfcefef));
+        padding.setEditable(false);
+        padding.setBorder(BorderFactory.createBevelBorder(1));
+
         text.setLineWrap(true);
-        text.setBounds(400,100,580,380);
+        text.setBounds(420,120,540,340);
         text.setWrapStyleWord(true);
         text.setBackground(new Color(0xfcefef));
-        text.setBorder(BorderFactory.createBevelBorder(1));
         text.setFont(new Font ("Tahoma", Font.PLAIN, 14));
-        text.setText("\n" + "   Property Name \n\n" + "   Summary: \n" + "   Price: \n" + "   Property Type: \n" );
+        text.setText("\n" + "Property Name \n\n" + "Summary: \n" + "Street: \n" + "Price: \n" +
+                "Property Type: \n" + "Accommodates: \n" + "Bedrooms: \n" + "Bathrooms: \n" + "");
         text.setEditable(false);
+
 
         // Adding scroll pane
         scrollPanel = new ScrollPanel(this);
@@ -91,6 +101,7 @@ public class MyPanel extends JPanel implements ActionListener {
 
         // Adding Text Area
         this.add(text);
+        this.add(padding);
 
         // Final Panel Setup
         setVisible(true);
@@ -98,6 +109,14 @@ public class MyPanel extends JPanel implements ActionListener {
 
     public void selectProperty(int index){
         selectedProperty = index;
+        text.setText("\n" + (String) currentProperties.get(selectedProperty).get("name") +"\n\n" +
+                "Summary: " + (String) currentProperties.get(selectedProperty).get("summary") + "\n" +
+                "Street: " + (String)((Document) currentProperties.get(selectedProperty).get("address")).get("street") + "\n" +
+                "Price: $" + Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("price")).doubleValue()) + "/day" + "\n" +
+                "Property Type: "+ (String) currentProperties.get(selectedProperty).get("property_type") +"\n" +
+                "Accommodates: " + Integer.toString( (Integer) currentProperties.get(selectedProperty).get("accommodates"))+ "\n" +
+                "Bedrooms: " + Integer.toString( (Integer) currentProperties.get(selectedProperty).get("bedrooms")) + "\n" +
+                "Bathrooms: "+ Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("bathrooms")).doubleValue()) + "\n" + "");
     }
 
     public void airbnbPopulator(String country, int maxPrice){
