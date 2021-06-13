@@ -502,6 +502,13 @@ public class MyPanel extends JPanel implements ActionListener {
             }
         }
         else if(e.getSource() == addListButton){
+            if (selectedProperty == -1 || currentProperties.size() == 0){
+                JOptionPane.showMessageDialog(this,
+                        "Select a property first!",
+                        "You've landed in ghost town",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
             myList.add(currentProperties.get(selectedProperty));
             JOptionPane.showMessageDialog(this,
                     "Added to my List",
@@ -544,7 +551,7 @@ public class MyPanel extends JPanel implements ActionListener {
         if (e.getSource() == mapButton) {
             if (currentProperties.size() == 0){
                 JOptionPane.showMessageDialog(this,
-                        "Search for a property first!",
+                        "Select a property first!",
                         "You've landed in ghost town",
                         JOptionPane.INFORMATION_MESSAGE);
                 return;
