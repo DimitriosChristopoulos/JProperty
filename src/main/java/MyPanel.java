@@ -2,6 +2,8 @@ import org.bson.Document;
 import org.bson.types.Decimal128;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.File;
 import java.net.URI;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Collections;
 
 
@@ -25,6 +28,7 @@ public class MyPanel extends JPanel implements ActionListener {
     ArrayList<Document> currentProperties = new ArrayList<>(); // This contains the properties current shown on the buttons
     int selectedProperty = -1;
     Image currentImage = null;
+    Image titleBar;
     // Panel related things
     JButton mainButton;
     JButton websiteButton;
@@ -37,6 +41,8 @@ public class MyPanel extends JPanel implements ActionListener {
     ScrollPanel scrollPanel;
     JTextArea text;
     JTextArea padding;
+
+
     boolean heatMap;
     Image map;
     public MyPanel(){
@@ -45,6 +51,14 @@ public class MyPanel extends JPanel implements ActionListener {
         allLocalProperties = NetworkHandler.getLocalListings();
 
         this.setLayout(null);
+        try{
+            titleBar = ImageIO.read(new File("Images/jProperty.png"));
+        }
+        catch(IOException exception){
+            exception.printStackTrace();
+            System.out.println("Image not found");
+            System.exit(1);
+        }
 
         // Setting background color
         this.setBackground(new Color(0xa3d5ff));
@@ -168,6 +182,7 @@ public class MyPanel extends JPanel implements ActionListener {
         heatMap = false;
         // Final Panel Setup
         setVisible(true);
+        repaint();
     }
     public void loadImages(){
         try{
@@ -261,19 +276,23 @@ public class MyPanel extends JPanel implements ActionListener {
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        if (!heatMap){
+
+        if (!heatMap) {
             g2.setColor(new Color(0x000000));
             Stroke oldStroke = g2.getStroke();
             g2.setStroke(new BasicStroke(8));
             g2.drawRect(60, 90, 300, 420);
             g2.setStroke(oldStroke);
-            if(currentImage != null){
-                g2.drawImage(currentImage,500,300,this);
+            if (currentImage != null) {
+                g2.drawImage(currentImage, 500, 300, this);
             }
         }
         else{
-            g2.drawImage(map,0,0,this);
+            g2.drawImage(map, 0, 0, this);
         }
+        g2.drawImage(titleBar, 512, 0, this);
+        g2.drawImage(currentImage, 500, 0, this);
+
     }
 
     @Override
@@ -469,6 +488,7 @@ public class MyPanel extends JPanel implements ActionListener {
             }
 
         }
+        repaint();
         if (e.getSource() == mapButton) {
             heatMap = true;
             setButtonsInvis();
