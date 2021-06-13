@@ -294,7 +294,7 @@ public class MyPanel extends JPanel implements ActionListener {
             g2.drawImage(map, 0, 0, this);
         }
         g2.drawImage(titleBar, 420, -10, this);
-        g2.drawImage(currentImage, 500, 0, this);
+        //g2.drawImage(currentImage, 500, 0, this);
 
     }
 
@@ -525,5 +525,8 @@ public class MyPanel extends JPanel implements ActionListener {
     }
     public void setMapButtonVisible(){
         mapButton.setVisible(true);
+    }
+    public void hideScrollPane(){
+        scrollPane.setVisible(false);
     }
 }
