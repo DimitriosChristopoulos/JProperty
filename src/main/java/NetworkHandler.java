@@ -16,6 +16,7 @@ public class NetworkHandler {
     public static MongoClient mongoClient;
     public static MongoCollection<Document> listings;
     public static MongoCollection<Document> localListings;
+    public static MongoCollection<Document> latsAndLongs;
     public static void init(){
         String password = "";
         try{
@@ -36,6 +37,7 @@ public class NetworkHandler {
         // Local data
         MongoDatabase databaseLocal = mongoClient.getDatabase("sample_windsor");
         localListings = databaseLocal.getCollection("listings");
+        latsAndLongs = databaseLocal.getCollection("latsAndLong");
 
 
 
@@ -54,6 +56,13 @@ public class NetworkHandler {
             listingsArray = (ArrayList<Document>)mainDoc.get("Agent Single Line");
         }
         return listingsArray;
+    }
+
+    public static String getLatsAndLongs(){
+        for(Document mainDoc: latsAndLongs.find()){
+            return (String)mainDoc.get("lat");
+        }
+        return null;
     }
 
 }

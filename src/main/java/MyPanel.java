@@ -101,7 +101,7 @@ public class MyPanel extends JPanel implements ActionListener {
         websiteButton.addActionListener(this);
         websiteButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
-        mapButton.setText("Open Heat Map");
+        mapButton.setText("Toggle Heat Map");
         mapButton.setFocusable(false);
         mapButton.addActionListener(this);
         mapButton.setBackground(new Color(59, 89, 182));
@@ -194,7 +194,7 @@ public class MyPanel extends JPanel implements ActionListener {
             pinPic = ImageIO.read(new File("pinPic.png"));
            // pinPic = pinPic.getScaledInstance(30,30,0);
             titleBar = ImageIO.read(new File("Images/jProperty.png"));
-            map = ImageIO.read(new File("mapOfWindsor2.png"));
+            map = ImageIO.read(new File("windMap.jpeg"));
             map = map.getScaledInstance(1024,576,0);
         }
         catch (IOException e) {
@@ -203,18 +203,21 @@ public class MyPanel extends JPanel implements ActionListener {
     }
     public void addCords(){
         try{
+            /*
             File cords = new File("latsAndLongs.txt");
             Scanner fileReader = new Scanner(cords);
-            while(fileReader.hasNextLine()){
-                String newLine = fileReader.nextLine();
-                String[] newCoords = newLine.split(",");
+             */
+            String coordsString = NetworkHandler.getLatsAndLongs();
+            String[] coordsArray = coordsString.split("\n");
+            for(String coord: coordsArray){
+                String[] newCoords = coord.split(",");
                 Double newLat = Double.parseDouble(newCoords[0]);
                 lattitudes.add(newLat);
                 Double newLong = Double.parseDouble(newCoords[1]);
                 longitudes.add(newLong);
             }
         }
-        catch(FileNotFoundException exception){
+        catch(Exception exception){
             System.out.println("cant find it");
             exception.printStackTrace();
             System.exit(1);
@@ -232,7 +235,6 @@ public class MyPanel extends JPanel implements ActionListener {
         for (Double xCord: lattitudes){
             double finalX = Math.abs(xCord-left);
             xPositions.add((int)(finalX*horizontal));
-            System.out.println(xPositions.get(xPositions.size()-1));
         }
         for (Double yCord: longitudes){
             double finalY = Math.abs(yCord-top);
@@ -282,8 +284,6 @@ public class MyPanel extends JPanel implements ActionListener {
         try {
             URL url = new URL((String) ((Document)currentProperties.get(selectedProperty).get("images")).get("picture_url"));
             Image image = ImageIO.read(url);
-            double lengthRatio = (double) image.getHeight(this)/image.getWidth(this);
-            image = image.getScaledInstance(200, (int)(200*lengthRatio), Image.SCALE_DEFAULT);
             currentImage = image;
         } catch (IOException e) {
             System.out.println("Image not found for property");
@@ -328,13 +328,12 @@ public class MyPanel extends JPanel implements ActionListener {
             g2.setColor(new Color(0x000000));
             g2.setStroke(new java.awt.BasicStroke(8));
             g2.drawRect(60, 90, 300, 420);
-            g2.drawImage(currentImage, 500, 0, this);
             g2.drawImage(titleBar, 420, -10, this);
             if (currentImage != null) {
-                currentImage = currentImage.getScaledInstance(400,120,0);
-                g2.drawImage(currentImage, 495, 370, this);
+                Image blittedImage = currentImage.getScaledInstance(192,120,0);
+                g2.drawImage(blittedImage, 595, 370, this);
                 g2.setStroke(new java.awt.BasicStroke(5));
-                g2.drawRect(495, 370, 400, 120);
+                g2.drawRect(595, 370, 192, 120);
             }
         }
         else{
@@ -543,6 +542,21 @@ public class MyPanel extends JPanel implements ActionListener {
         }
         repaint();
         if (e.getSource() == mapButton) {
+            if (currentProperties.size() == 0){
+                JOptionPane.showMessageDialog(this,
+                        "Search for a property first!",
+                        "You've landed in ghost town",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            if(!showingLocalListings){
+                JOptionPane.showMessageDialog(this,
+                        "Airbnb listings don't support the heat map",
+                        "Unsupported feature",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
             heatMap = !heatMap;
             if (heatMap == false){
                 setButtonsVis();
