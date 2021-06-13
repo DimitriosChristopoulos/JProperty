@@ -44,6 +44,7 @@ public class ScrollPanel extends JPanel implements ActionListener {
             add(currentButton);
             buttons.add(currentButton);
         }
+        repaint();
     }
 
     @Override
