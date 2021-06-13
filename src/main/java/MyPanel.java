@@ -192,7 +192,7 @@ public class MyPanel extends JPanel implements ActionListener {
     public void loadImages(){
         try{
             pinPic = ImageIO.read(new File("pinPic.png"));
-            pinPic = pinPic.getScaledInstance(30,30,0);
+           // pinPic = pinPic.getScaledInstance(30,30,0);
             titleBar = ImageIO.read(new File("Images/jProperty.png"));
             map = ImageIO.read(new File("mapOfWindsor2.png"));
             map = map.getScaledInstance(1024,576,0);
