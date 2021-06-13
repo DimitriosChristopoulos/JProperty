@@ -11,10 +11,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class MyPanel extends JPanel implements ActionListener {
-    // Current properties shown
+    // Local properties stuff
+    ArrayList<Document> allLocalProperties = new ArrayList<>();
+    boolean showingLocalListings = false;
+    // Current properties shown (AIRBNB ONES)
     ArrayList<Document> currentProperties = new ArrayList<>();
     int selectedProperty = -1;
     Image currentImage = null;
@@ -30,6 +34,9 @@ public class MyPanel extends JPanel implements ActionListener {
     JTextArea text;
     JTextArea padding;
     public MyPanel(){
+
+        // Setting up local listings
+        allLocalProperties = NetworkHandler.getLocalListings();
 
         this.setLayout(null);
 
@@ -151,15 +158,29 @@ public class MyPanel extends JPanel implements ActionListener {
 
     public void selectProperty(int index){
         selectedProperty = index;
-        text.setText("\n" + (String) currentProperties.get(selectedProperty).get("name") +"\n\n" +
-                "Summary: " + (String) currentProperties.get(selectedProperty).get("summary") + "\n" +
-                "Street: " + (String)((Document) currentProperties.get(selectedProperty).get("address")).get("street") + "\n" +
-                "Price: $" + Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("price")).doubleValue()) + "/day" + "\n" +
-                "Property Type: "+ (String) currentProperties.get(selectedProperty).get("property_type") +"\n" +
-                "Accommodates: " + Integer.toString( (Integer) currentProperties.get(selectedProperty).get("accommodates"))+ "\n" +
-                "Bedrooms: " + Integer.toString( (Integer) currentProperties.get(selectedProperty).get("bedrooms")) + "\n" +
-                "Bathrooms: "+ Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("bathrooms")).doubleValue()) + "\n" + "");
-        getPropertyImage();
+        if(showingLocalListings){
+            currentImage = null;
+            text.setText("\n" + (String) currentProperties.get(selectedProperty).get("Address") +"\n\n" +
+                    "Realtor: " + (String) currentProperties.get(selectedProperty).get("List Office") + "\n" +
+                    "City: " + (String)currentProperties.get(selectedProperty).get("City") + "\n" +
+                    "Price: " + ((String) currentProperties.get(selectedProperty).get("List Price"))  + "\n" +
+                    "Property Type: "+ "House" +"\n" +
+                    "District: " + (String) currentProperties.get(selectedProperty).get("Dist")+ "\n" +
+                    "Bedrooms: " + (String) currentProperties.get(selectedProperty).get("Beds") + "\n" +
+                    "Bathrooms: "+ (String) currentProperties.get(selectedProperty).get("Baths Total") + "\n" + "");
+        }
+        else{
+            text.setText("\n" + (String) currentProperties.get(selectedProperty).get("name") +"\n\n" +
+                    "Summary: " + (String) currentProperties.get(selectedProperty).get("summary") + "\n" +
+                    "Street: " + (String)((Document) currentProperties.get(selectedProperty).get("address")).get("street") + "\n" +
+                    "Price: $" + Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("price")).doubleValue()) + "/day" + "\n" +
+                    "Property Type: "+ (String) currentProperties.get(selectedProperty).get("property_type") +"\n" +
+                    "Accommodates: " + Integer.toString( (Integer) currentProperties.get(selectedProperty).get("accommodates"))+ "\n" +
+                    "Bedrooms: " + Integer.toString( (Integer) currentProperties.get(selectedProperty).get("bedrooms")) + "\n" +
+                    "Bathrooms: "+ Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("bathrooms")).doubleValue()) + "\n" + "");
+            getPropertyImage();
+        }
+
         repaint();
     }
 
@@ -202,6 +223,14 @@ public class MyPanel extends JPanel implements ActionListener {
         updateScrollPanel();
     }
 
+    public void localPopulator(){
+        currentProperties.clear();
+        for(int i = 0; i < 50; i++){
+            currentProperties.add(allLocalProperties.get(i));
+        }
+        updateScrollPanel();
+    }
+
     public void updateScrollPanel(){
         scrollPanel.updateButtons(currentProperties);
     }
@@ -226,6 +255,7 @@ public class MyPanel extends JPanel implements ActionListener {
     {
         if (e.getSource() == mainButton)
         {
+            showingLocalListings = false;
             // Search tool
             int selection = JOptionPane.showOptionDialog(this,
                     "Which database would you like to access?",
@@ -281,13 +311,15 @@ public class MyPanel extends JPanel implements ActionListener {
                     }
                 }
                 catch(NumberFormatException exception){
-                    JOptionPane.showMessageDialog(this, "Invalid price. (Must be integer)");
+                    JOptionPane.showMessageDialog(this, "Operation cancelled. (Invalid price?)");
                 }
 
             }
             // Local houses selection
             else if (selection == 1){
-                System.out.println("houses");
+                showingLocalListings = true;
+                Collections.shuffle(allLocalProperties);
+                localPopulator();
             }
         }
         else if(e.getSource() == websiteButton){

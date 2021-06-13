@@ -37,7 +37,12 @@ public class ScrollPanel extends JPanel implements ActionListener {
         for(int i = 0; i < limit; i++){
             JButton currentButton = new JButton();
             currentButton.setBounds(20,20 + (i*30),250,30);
-            currentButton.setText((String)newProperties.get(i).get("name"));
+            if(parentPanel.showingLocalListings){
+                currentButton.setText((String)newProperties.get(i).get("Address"));
+            }
+            else{
+                currentButton.setText((String)newProperties.get(i).get("name"));
+            }
             currentButton.setFocusable(false);
             currentButton.setActionCommand(Integer.toString(i));
             currentButton.addActionListener(this);

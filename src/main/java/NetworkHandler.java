@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class NetworkHandler {
     public static MongoClient mongoClient;
     public static MongoCollection<Document> listings;
+    public static MongoCollection<Document> localListings;
     public static void init(){
         String password = "";
         try{
@@ -29,8 +30,15 @@ public class NetworkHandler {
         }
         mongoClient = MongoClients.create(
                 "mongodb+srv://Armaan:" + password + "@cluster0.dnqxb.mongodb.net/sample_airbnb?retryWrites=true&w=majority");
+        // Airbnb data
         MongoDatabase database = mongoClient.getDatabase("sample_airbnb");
         listings = database.getCollection("listingsAndReviews");
+        // Local data
+        MongoDatabase databaseLocal = mongoClient.getDatabase("sample_windsor");
+        localListings = databaseLocal.getCollection("listings");
+
+
+
     }
     public static ArrayList<Document> getListings(int numberOfListings){
         ArrayList<Document> listingsArray = new ArrayList<>();
@@ -39,4 +47,13 @@ public class NetworkHandler {
         }
         return listingsArray;
     }
+
+    public static ArrayList<Document> getLocalListings(){
+        ArrayList<Document> listingsArray = new ArrayList<>();
+        for(Document mainDoc: localListings.find()){
+            listingsArray = (ArrayList<Document>)mainDoc.get("Agent Single Line");
+        }
+        return listingsArray;
+    }
+
 }

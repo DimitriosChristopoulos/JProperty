@@ -9,10 +9,10 @@ public class JProperty extends JFrame {
     // Constructor
     public JProperty(){
         super("JProperty"); // Setting the title
-        // Constructing frame
-        frame = new MyPanel();
         // Initializing Networking Features
         NetworkHandler.init();
+        // Constructing frame
+        frame = new MyPanel();
         // Setting window properties
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1024,576);
