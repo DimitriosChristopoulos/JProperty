@@ -1,16 +1,12 @@
-import jdk.swing.interop.SwingInterOpUtils;
 import org.bson.Document;
 import org.bson.types.Decimal128;
 import java.awt.Desktop;
 import java.net.URI;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.multi.MultiButtonUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -123,6 +119,7 @@ public class MyPanel extends JPanel implements ActionListener {
                 "Accommodates: " + Integer.toString( (Integer) currentProperties.get(selectedProperty).get("accommodates"))+ "\n" +
                 "Bedrooms: " + Integer.toString( (Integer) currentProperties.get(selectedProperty).get("bedrooms")) + "\n" +
                 "Bathrooms: "+ Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("bathrooms")).doubleValue()) + "\n" + "");
+        getPropertyImage();
     }
 
     public void getPropertyImage(){
