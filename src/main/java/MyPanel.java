@@ -85,6 +85,7 @@ public class MyPanel extends JPanel implements ActionListener {
         text.setText("\n" + "Property Name \n\n" + "Summary: \n" + "Street: \n" + "Price: \n" +
                 "Property Type: \n" + "Accommodates: \n" + "Bedrooms: \n" + "Bathrooms: \n" + "");
         text.setEditable(false);
+        text.revalidate();
 
 
         // Adding scroll pane
@@ -120,6 +121,7 @@ public class MyPanel extends JPanel implements ActionListener {
                 "Bedrooms: " + Integer.toString( (Integer) currentProperties.get(selectedProperty).get("bedrooms")) + "\n" +
                 "Bathrooms: "+ Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("bathrooms")).doubleValue()) + "\n" + "");
         getPropertyImage();
+        repaint();
     }
 
     public void getPropertyImage(){
@@ -146,7 +148,6 @@ public class MyPanel extends JPanel implements ActionListener {
             currentImage = null;
         }
         jDialog.dispose();
-        this.repaint();
     }
 
     public void airbnbPopulator(String country, int maxPrice){
@@ -209,7 +210,7 @@ public class MyPanel extends JPanel implements ActionListener {
                 String maxPriceString = (String)JOptionPane.showInputDialog(
                         this,
                         "What is the maximum price per day you are looking for? (Write 0 for no limit)",
-                        "Country selection",
+                        "Price selection",
                         JOptionPane.PLAIN_MESSAGE,
                         null,
                         null,
