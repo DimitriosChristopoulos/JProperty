@@ -147,18 +147,18 @@ public class MyPanel extends JPanel implements ActionListener {
 
         // Customizing Text Area
 
-        padding.setBounds(400,100,580,380);
+        padding.setBounds(400,100,580,260);
         padding.setBorder(null);
         padding.setBackground(new Color(0xfcefef));
         padding.setEditable(false);
         padding.setBorder(BorderFactory.createBevelBorder(1));
 
         text.setLineWrap(true);
-        text.setBounds(420,120,540,340);
+        text.setBounds(410,110,560,240);
         text.setWrapStyleWord(true);
         text.setBackground(new Color(0xfcefef));
         text.setFont(new Font ("Tahoma", Font.PLAIN, 14));
-        text.setText("\n" + "Property Name \n\n" + "Summary: \n" + "Street: \n" + "Price: \n" +
+        text.setText("Property Name \n\n" + "Summary: \n" + "Street: \n" + "Price: \n" +
                 "Property Type: \n" + "Accommodates: \n" + "Bedrooms: \n" + "Bathrooms: \n" + "");
         text.setEditable(false);
         text.revalidate();
@@ -244,7 +244,7 @@ public class MyPanel extends JPanel implements ActionListener {
         selectedProperty = index;
         if(showingLocalListings){
             currentImage = null;
-            text.setText("\n" + (String) currentProperties.get(selectedProperty).get("Address") +"\n\n" +
+            text.setText((String) currentProperties.get(selectedProperty).get("Address") +"\n\n" +
                     "Realtor: " + (String) currentProperties.get(selectedProperty).get("List Office") + "\n" +
                     "City: " + (String)currentProperties.get(selectedProperty).get("City") + "\n" +
                     "Price: " + ((String) currentProperties.get(selectedProperty).get("List Price"))  + "\n" +
@@ -254,7 +254,7 @@ public class MyPanel extends JPanel implements ActionListener {
                     "Bathrooms: "+ (String) currentProperties.get(selectedProperty).get("Baths Total") + "\n" + "");
         }
         else{
-            text.setText("\n" + (String) currentProperties.get(selectedProperty).get("name") +"\n\n" +
+            text.setText((String) currentProperties.get(selectedProperty).get("name") +"\n\n" +
                     "Summary: " + (String) currentProperties.get(selectedProperty).get("summary") + "\n" +
                     "Street: " + (String)((Document) currentProperties.get(selectedProperty).get("address")).get("street") + "\n" +
                     "Price: $" + Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("price")).doubleValue()) + "/day" + "\n" +
@@ -327,14 +327,15 @@ public class MyPanel extends JPanel implements ActionListener {
 
         if (!heatMap) {
             g2.setColor(new Color(0x000000));
-            Stroke oldStroke = g2.getStroke();
-            g2.setStroke(new BasicStroke(8));
+            g2.setStroke(new java.awt.BasicStroke(8));
             g2.drawRect(60, 90, 300, 420);
-            g2.setStroke(oldStroke);
             g2.drawImage(currentImage, 500, 0, this);
             g2.drawImage(titleBar, 420, -10, this);
             if (currentImage != null) {
-                g2.drawImage(currentImage, 500, 300, this);
+                currentImage = currentImage.getScaledInstance(400,120,0);
+                g2.drawImage(currentImage, 495, 370, this);
+                g2.setStroke(new java.awt.BasicStroke(5));
+                g2.drawRect(495, 370, 400, 120);
             }
         }
         else{
