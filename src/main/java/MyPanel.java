@@ -16,10 +16,10 @@ import java.util.Collections;
 
 public class MyPanel extends JPanel implements ActionListener {
     // Local properties stuff
-    ArrayList<Document> allLocalProperties = new ArrayList<>();
+    ArrayList<Document> allLocalProperties = new ArrayList<>(); // This contains all 650 local properties
     boolean showingLocalListings = false;
-    // Current properties shown (AIRBNB ONES)
-    ArrayList<Document> currentProperties = new ArrayList<>();
+    // Current properties shown
+    ArrayList<Document> currentProperties = new ArrayList<>(); // This contains the properties current shown on the buttons
     int selectedProperty = -1;
     Image currentImage = null;
     // Panel related things
@@ -255,7 +255,6 @@ public class MyPanel extends JPanel implements ActionListener {
     {
         if (e.getSource() == mainButton)
         {
-            showingLocalListings = false;
             // Search tool
             int selection = JOptionPane.showOptionDialog(this,
                     "Which database would you like to access?",
@@ -274,8 +273,10 @@ public class MyPanel extends JPanel implements ActionListener {
                         JOptionPane.PLAIN_MESSAGE,
                         null,
                         new String[]{"Worldwide", "United States", "Spain", "Australia", "Canada", "Turkey", "Portugal", "Brazil", "Hong Kong"},
-                        "Worldwide");
-
+                        null);
+                if(country == null){
+                    return;
+                }
                 String maxPriceString = (String)JOptionPane.showInputDialog(
                         this,
                         "What is the maximum price per day you are looking for? (Write 0 for no limit)",
@@ -283,35 +284,38 @@ public class MyPanel extends JPanel implements ActionListener {
                         JOptionPane.PLAIN_MESSAGE,
                         null,
                         null,
-                        "0");
+                        null);
                 int maxPrice;
                 try{
-                    maxPrice = Integer.parseInt(maxPriceString);
-                    JLabel loadingLabel = new JLabel("Fetching listings...");
-                    loadingLabel.setBounds(500,100,100,100);
-                    loadingLabel.setVisible(true);
-                    // Loading window
-                    JDialog jDialog = new JDialog();
-                    jDialog.setLayout(new GridBagLayout());
-                    jDialog.add(new JLabel("Fetching listings..."));
-                    jDialog.setMinimumSize(new Dimension(150, 50));
-                    jDialog.setResizable(false);
-                    jDialog.setModal(false);
-                    jDialog.setUndecorated(true);
-                    jDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-                    jDialog.setBackground(new Color (0xfc5858));
-                    jDialog.setLocationRelativeTo(null);
-                    jDialog.setVisible(true);
-                    jDialog.revalidate();
-                    jDialog.paintComponents(jDialog.getGraphics());
-                    airbnbPopulator(country, maxPrice);
-                    jDialog.dispose();
-                    if(currentProperties.size() == 0){
-                        JOptionPane.showMessageDialog(this, "No properties found matching your search. (Try a higher max price?)");
+                    if(maxPriceString != null){
+                        maxPrice = Integer.parseInt(maxPriceString);
+                        JLabel loadingLabel = new JLabel("Fetching listings...");
+                        loadingLabel.setBounds(500,100,100,100);
+                        loadingLabel.setVisible(true);
+                        // Loading window
+                        JDialog jDialog = new JDialog();
+                        jDialog.setLayout(new GridBagLayout());
+                        jDialog.add(new JLabel("Fetching listings..."));
+                        jDialog.setMinimumSize(new Dimension(150, 50));
+                        jDialog.setResizable(false);
+                        jDialog.setModal(false);
+                        jDialog.setUndecorated(true);
+                        jDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                        jDialog.setLocationRelativeTo(null);
+                        jDialog.setVisible(true);
+                        jDialog.revalidate();
+                        jDialog.paintComponents(jDialog.getGraphics());
+                        showingLocalListings = false;
+                        airbnbPopulator(country, maxPrice);
+                        jDialog.dispose();
+                        if(currentProperties.size() == 0){
+                            JOptionPane.showMessageDialog(this, "No properties found matching your search. (Try a higher max price?)");
+                        }
                     }
+
                 }
                 catch(NumberFormatException exception){
-                    JOptionPane.showMessageDialog(this, "Operation cancelled. (Invalid price?)");
+                    JOptionPane.showMessageDialog(this, "Invalid price. (Prices must be Integer values)");
                 }
 
             }
@@ -333,6 +337,44 @@ public class MyPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Listing has an invalid website attached");
             }
 
+        }
+        else if(e.getSource() == reviewButton){
+            if(!showingLocalListings) {
+                ArrayList<Document> reviews = (ArrayList<Document>) currentProperties.get(selectedProperty).get("reviews");
+                ArrayList<String> reviewNames = new ArrayList<>();
+                for (Document review : reviews) {
+                    reviewNames.add((String) review.get("reviewer_name"));
+                }
+                if(reviews.size() == 0){
+                    JOptionPane.showMessageDialog(this,
+                            "This listing doesn't have any reviews",
+                            "No reviews",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    String choice = (String) JOptionPane.showInputDialog(
+                            this,
+                            "Select the review that you would like to view",
+                            "Reviews",
+                            JOptionPane.PLAIN_MESSAGE,
+                            null,
+                            reviewNames.toArray(),
+                            null);
+                    if(choice != null){
+                        int index = reviewNames.indexOf(choice);
+                        JOptionPane.showMessageDialog(this,
+                                (String) reviews.get(index).get("comments"),
+                                choice + "'s review",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        }
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(this,
+                        "Reviews not supported for local listings",
+                        "Unsupported feature",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         else if (e.getSource() == mapButton)
         {
