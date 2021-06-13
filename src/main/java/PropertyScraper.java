@@ -95,7 +95,4 @@ public class PropertyScraper{
             System.exit(1);
         }
     }
-
-
-
 }
