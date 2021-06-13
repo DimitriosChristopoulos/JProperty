@@ -1,6 +1,7 @@
 import org.bson.Document;
 import org.bson.types.Decimal128;
 import java.awt.Desktop;
+import java.io.File;
 import java.net.URI;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,12 +32,15 @@ public class MyPanel extends JPanel implements ActionListener {
     JButton addListButton;
     JButton reviewButton;
     JButton listButton;
+    ArrayList<JButton> allButtons;
     JScrollPane scrollPane;
     ScrollPanel scrollPanel;
     JTextArea text;
     JTextArea padding;
+    boolean heatMap;
+    Image map;
     public MyPanel(){
-
+        loadImages();
         // Setting up local listings
         allLocalProperties = NetworkHandler.getLocalListings();
 
@@ -114,6 +118,14 @@ public class MyPanel extends JPanel implements ActionListener {
         listButton.setBounds(850,55,150,30);
         listButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
+        allButtons = new ArrayList<JButton>();
+        allButtons.add(mainButton);
+        allButtons.add(websiteButton);
+        allButtons.add(mapButton);
+        allButtons.add(addListButton);
+        allButtons.add(reviewButton);
+        allButtons.add(listButton);
+
         // Customizing Text Area
 
         padding.setBounds(400,100,580,380);
@@ -153,11 +165,19 @@ public class MyPanel extends JPanel implements ActionListener {
         // Adding Text Area
         this.add(text);
         this.add(padding);
-
+        heatMap = false;
         // Final Panel Setup
         setVisible(true);
     }
-
+    public void loadImages(){
+        try{
+            map = ImageIO.read(new File("mapOfWindsor2.png"));
+            map = map.getScaledInstance(1024,576,0);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void selectProperty(int index){
         selectedProperty = index;
         if(showingLocalListings){
@@ -182,7 +202,6 @@ public class MyPanel extends JPanel implements ActionListener {
                     "Bathrooms: "+ Double.toString(((Decimal128) currentProperties.get(selectedProperty).get("bathrooms")).doubleValue()) + "\n" + "");
             getPropertyImage();
         }
-
         repaint();
     }
 
@@ -242,13 +261,18 @@ public class MyPanel extends JPanel implements ActionListener {
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(new Color(0x000000));
-        Stroke oldStroke = g2.getStroke();
-        g2.setStroke(new BasicStroke(8));
-        g2.drawRect(60, 90, 300, 420);
-        g2.setStroke(oldStroke);
-        if(currentImage != null){
-            g2.drawImage(currentImage,500,300,this);
+        if (!heatMap){
+            g2.setColor(new Color(0x000000));
+            Stroke oldStroke = g2.getStroke();
+            g2.setStroke(new BasicStroke(8));
+            g2.drawRect(60, 90, 300, 420);
+            g2.setStroke(oldStroke);
+            if(currentImage != null){
+                g2.drawImage(currentImage,500,300,this);
+            }
+        }
+        else{
+            g2.drawImage(map,0,0,this);
         }
     }
 
@@ -267,7 +291,6 @@ public class MyPanel extends JPanel implements ActionListener {
                     new String[]{"Airbnb", "Local listings"},"none");
             //Airbnb selection
             if(selection == 0){
-                System.out.println("airbnb");
                 String country = (String)JOptionPane.showInputDialog(
                         this,
                         "Select the country you would like to search in",
@@ -446,10 +469,29 @@ public class MyPanel extends JPanel implements ActionListener {
             }
 
         }
-        else if (e.getSource() == mapButton)
-        {
-
+        if (e.getSource() == mapButton) {
+            heatMap = true;
+            setButtonsInvis();
         }
+        else{
+            setButtonsvis();
+        }
+        repaint();
     }
-
+    public void setButtonsInvis(){
+        for (JButton curButton : allButtons){
+            curButton.setVisible(false);
+        }
+        scrollPane.setVisible(false);
+        text.setVisible(false);
+        padding.setVisible(false);
+    }
+    public void setButtonsvis(){
+        for (JButton curButton : allButtons){
+            curButton.setVisible(true);
+        }
+        scrollPane.setVisible(true);
+        text.setVisible(true);
+        padding.setVisible(true);
+    }
 }

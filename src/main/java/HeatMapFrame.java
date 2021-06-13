@@ -1,9 +1,7 @@
 import javax.swing.*;
 
 public class HeatMapFrame extends JFrame {
-
     HeatMapPanel mapFrame;
-
     public HeatMapFrame()
     {
         super("Heat Map"); // Setting the title
@@ -19,5 +17,7 @@ public class HeatMapFrame extends JFrame {
         add(mapFrame);
         setVisible(true);
     }
-
+    public static void main(String[] args){
+        HeatMapFrame myFrame = new HeatMapFrame();
+    }
 }
