@@ -191,8 +191,8 @@ public class MyPanel extends JPanel implements ActionListener {
     }
     public void loadImages(){
         try{
-            pinPic = ImageIO.read(new File("pinPic.jpg"));
-            pinPic = pinPic.getScaledInstance(10,10,0);
+            pinPic = ImageIO.read(new File("pinPic.png"));
+            pinPic = pinPic.getScaledInstance(30,30,0);
             titleBar = ImageIO.read(new File("Images/jProperty.png"));
             map = ImageIO.read(new File("mapOfWindsor2.png"));
             map = map.getScaledInstance(1024,576,0);
@@ -237,7 +237,6 @@ public class MyPanel extends JPanel implements ActionListener {
         for (Double yCord: longitudes){
             double finalY = Math.abs(yCord-top);
             yPositions.add((int)(finalY*vertical));
-            System.out.println(yPositions.get(yPositions.size()-1));
         }
     }
     public void selectProperty(int index){
@@ -341,7 +340,7 @@ public class MyPanel extends JPanel implements ActionListener {
         else{
             g2.drawImage(map, 0, 0, this);
             for (int i = 0; i < longitudes.size(); i++){
-                g2.drawImage(pinPic,xPositions.get(i),yPositions.get(i),this);
+                g2.drawImage(pinPic,xPositions.get(i)-15,yPositions.get(i)-30,this);
             }
         }
 
