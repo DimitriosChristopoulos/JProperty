@@ -1,14 +1,19 @@
+import jdk.swing.interop.SwingInterOpUtils;
 import org.bson.Document;
 import org.bson.types.Decimal128;
 import java.awt.Desktop;
 import java.net.URI;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.multi.MultiButtonUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -16,6 +21,7 @@ public class MyPanel extends JPanel implements ActionListener {
     // Current properties shown
     ArrayList<Document> currentProperties = new ArrayList<>();
     int selectedProperty = -1;
+    Image currentImage = null;
     // Panel related things
     JButton mainButton;
     JButton websiteButton;
@@ -100,6 +106,33 @@ public class MyPanel extends JPanel implements ActionListener {
         selectedProperty = index;
     }
 
+    public void getPropertyImage(){
+        JDialog jDialog = new JDialog();
+        jDialog.setLayout(new GridBagLayout());
+        jDialog.add(new JLabel("Fetching image..."));
+        jDialog.setMinimumSize(new Dimension(150, 50));
+        jDialog.setResizable(false);
+        jDialog.setModal(false);
+        jDialog.setUndecorated(true);
+        jDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        jDialog.setLocationRelativeTo(null);
+        jDialog.setVisible(true);
+        jDialog.revalidate();
+        jDialog.paintComponents(jDialog.getGraphics());
+        try {
+            URL url = new URL((String) ((Document)currentProperties.get(selectedProperty).get("images")).get("picture_url"));
+            Image image = ImageIO.read(url);
+            double lengthRatio = (double) image.getHeight(this)/image.getWidth(this);
+            image = image.getScaledInstance(200, (int)(200*lengthRatio), Image.SCALE_DEFAULT);
+            currentImage = image;
+        } catch (IOException e) {
+            System.out.println("Image not found for property");
+            currentImage = null;
+        }
+        jDialog.dispose();
+        this.repaint();
+    }
+
     public void airbnbPopulator(String country, int maxPrice){
         currentProperties.clear();
         for(Document listing: NetworkHandler.getListings(1000)) {
@@ -115,7 +148,6 @@ public class MyPanel extends JPanel implements ActionListener {
 
     public void updateScrollPanel(){
         scrollPanel.updateButtons(currentProperties);
-
     }
 
 
@@ -128,6 +160,9 @@ public class MyPanel extends JPanel implements ActionListener {
         g2.setStroke(new BasicStroke(8));
         g2.drawRect(60, 90, 300, 420);
         g2.setStroke(oldStroke);
+        if(currentImage != null){
+            g2.drawImage(currentImage,500,300,this);
+        }
     }
 
     @Override

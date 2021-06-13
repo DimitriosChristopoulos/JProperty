@@ -49,7 +49,6 @@ public class ScrollPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(buttons.contains((JButton)e.getSource())){
-            System.out.println(e.getActionCommand());
             parentPanel.selectProperty(Integer.parseInt(e.getActionCommand()));
         }
     }
