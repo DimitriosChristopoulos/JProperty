@@ -15,6 +15,8 @@ import java.util.Collections;
 
 
 public class MyPanel extends JPanel implements ActionListener {
+    // MyList
+    ArrayList<Document> myList = new ArrayList<>();
     // Local properties stuff
     ArrayList<Document> allLocalProperties = new ArrayList<>(); // This contains all 650 local properties
     boolean showingLocalListings = false;
@@ -305,6 +307,10 @@ public class MyPanel extends JPanel implements ActionListener {
                         jDialog.setVisible(true);
                         jDialog.revalidate();
                         jDialog.paintComponents(jDialog.getGraphics());
+                        // clearing list
+                        if(showingLocalListings){
+                            myList.clear();
+                        }
                         showingLocalListings = false;
                         airbnbPopulator(country, maxPrice);
                         jDialog.dispose();
@@ -321,12 +327,30 @@ public class MyPanel extends JPanel implements ActionListener {
             }
             // Local houses selection
             else if (selection == 1){
+                if(!showingLocalListings){
+                    myList.clear();
+                }
                 showingLocalListings = true;
                 Collections.shuffle(allLocalProperties);
                 localPopulator();
             }
         }
         else if(e.getSource() == websiteButton){
+            if(selectedProperty == -1){
+                JOptionPane.showMessageDialog(this,
+                        "Select a property first!",
+                        "You've landed in ghost town",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            if (showingLocalListings) {
+                JOptionPane.showMessageDialog(this,
+                    "Websites not supported for local listings",
+                    "Unsupported feature",
+                    JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
             try{
                 if (selectedProperty != -1 && Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                     Desktop.getDesktop().browse(new URI((String)currentProperties.get(selectedProperty).get("listing_url")));
@@ -339,6 +363,13 @@ public class MyPanel extends JPanel implements ActionListener {
 
         }
         else if(e.getSource() == reviewButton){
+            if(selectedProperty == -1){
+                JOptionPane.showMessageDialog(this,
+                        "Select a property first!",
+                        "You've landed in ghost town",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
             if(!showingLocalListings) {
                 ArrayList<Document> reviews = (ArrayList<Document>) currentProperties.get(selectedProperty).get("reviews");
                 ArrayList<String> reviewNames = new ArrayList<>();
@@ -375,6 +406,45 @@ public class MyPanel extends JPanel implements ActionListener {
                         "Unsupported feature",
                         JOptionPane.INFORMATION_MESSAGE);
             }
+        }
+        else if(e.getSource() == addListButton){
+            myList.add(currentProperties.get(selectedProperty));
+            JOptionPane.showMessageDialog(this,
+                    "Added to my List",
+                    "Success!",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(e.getSource() == listButton){
+            if(myList.size() == 0){
+                JOptionPane.showMessageDialog(this,
+                        "Your list is empty.",
+                        "Add to your List!",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            ArrayList<String> options = new ArrayList<>();
+            for (Document item : myList) {
+                if(!showingLocalListings){
+                    options.add((String) item.get("name"));
+                }
+                else{
+                    options.add((String) item.get("Address"));
+                }
+            }
+            String choice = (String) JOptionPane.showInputDialog(
+                    this,
+                    "Select the listing that you would list to view",
+                    "My List",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    options.toArray(),
+                    null);
+            if(choice != null){
+                int index = options.indexOf(choice);
+                currentProperties.add(myList.get(index));
+                selectProperty(currentProperties.size() - 1);
+            }
+
         }
         else if (e.getSource() == mapButton)
         {
