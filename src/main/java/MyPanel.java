@@ -29,6 +29,7 @@ public class MyPanel extends JPanel implements ActionListener {
     int selectedProperty = -1;
     Image currentImage = null;
     Image titleBar;
+    Image pinPic;
     // Panel related things
     JButton mainButton;
     JButton websiteButton;
@@ -37,19 +38,23 @@ public class MyPanel extends JPanel implements ActionListener {
     JButton reviewButton;
     JButton listButton;
     ArrayList<JButton> allButtons;
+    ArrayList<Integer> xPositions = new ArrayList<Integer>();
+    ArrayList<Integer> yPositions = new ArrayList<Integer>();
     JScrollPane scrollPane;
     ScrollPanel scrollPanel;
     JTextArea text;
     JTextArea padding;
-
+    private ArrayList<Double> lattitudes = new ArrayList<Double>();
+    private ArrayList<Double> longitudes = new ArrayList<Double>();
 
     boolean heatMap;
     Image map;
     public MyPanel(){
         loadImages();
+        addCords();
+        getPositions();
         // Setting up local listings
         allLocalProperties = NetworkHandler.getLocalListings();
-
         this.setLayout(null);
         try{
             titleBar = ImageIO.read(new File("Images/jProperty1.png"));
@@ -186,11 +191,53 @@ public class MyPanel extends JPanel implements ActionListener {
     }
     public void loadImages(){
         try{
+            pinPic = ImageIO.read(new File("pinPic.jpg"));
+            pinPic = pinPic.getScaledInstance(10,10,0);
+            titleBar = ImageIO.read(new File("Images/jProperty.png"));
             map = ImageIO.read(new File("mapOfWindsor2.png"));
             map = map.getScaledInstance(1024,576,0);
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    public void addCords(){
+        try{
+            File cords = new File("latsAndLongs.txt");
+            Scanner fileReader = new Scanner(cords);
+            while(fileReader.hasNextLine()){
+                String newLine = fileReader.nextLine();
+                String[] newCoords = newLine.split(",");
+                Double newLat = Double.parseDouble(newCoords[0]);
+                lattitudes.add(newLat);
+                Double newLong = Double.parseDouble(newCoords[1]);
+                longitudes.add(newLong);
+            }
+        }
+        catch(FileNotFoundException exception){
+            System.out.println("cant find it");
+            exception.printStackTrace();
+            System.exit(1);
+        }
+    }
+    public void getPositions(){
+        double left = 42.29023;
+        double right = 42.154739;
+        double top = 83.131683;
+        double bottom = 82.805071;
+        double horizontalPixels = 1024.0000000000000;
+        double verticalPixels = 576.0000000000000;
+        double horizontal = horizontalPixels/(left-right);
+        double vertical = verticalPixels/(top-bottom);
+        for (Double xCord: lattitudes){
+            double finalX = Math.abs(xCord-left);
+            xPositions.add((int)(finalX*horizontal));
+            System.out.println(xPositions.get(xPositions.size()-1));
+        }
+        for (Double yCord: longitudes){
+            double finalY = Math.abs(yCord-top);
+            yPositions.add((int)(finalY*vertical));
+            System.out.println(yPositions.get(yPositions.size()-1));
         }
     }
     public void selectProperty(int index){
@@ -284,6 +331,8 @@ public class MyPanel extends JPanel implements ActionListener {
             g2.setStroke(new BasicStroke(8));
             g2.drawRect(60, 90, 300, 420);
             g2.setStroke(oldStroke);
+            g2.drawImage(titleBar, 512, 0, this);
+            g2.drawImage(currentImage, 500, 0, this);
            // g2.setColor(new Color(0xfcefef));
             //g2.drawRect(60,90,300,420);
             if (currentImage != null) {
@@ -292,6 +341,9 @@ public class MyPanel extends JPanel implements ActionListener {
         }
         else{
             g2.drawImage(map, 0, 0, this);
+            for (int i = 0; i < longitudes.size(); i++){
+                g2.drawImage(pinPic,xPositions.get(i),yPositions.get(i),this);
+            }
         }
         g2.drawImage(titleBar, 420, -10, this);
         //g2.drawImage(currentImage, 500, 0, this);
