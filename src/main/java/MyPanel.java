@@ -1,10 +1,16 @@
 import org.bson.Document;
 import org.bson.types.Decimal128;
-
+import java.awt.Desktop;
+import java.net.URI;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 
@@ -55,6 +61,7 @@ public class MyPanel extends JPanel implements ActionListener {
         websiteButton.setForeground(Color.WHITE);
         websiteButton.setFont(new Font("Tahoma", Font.BOLD, 12));
         websiteButton.setBounds(850,500,150,30);
+        websiteButton.addActionListener(this);
 
         mapButton.setText("Open Heat Map");
         mapButton.setFocusable(false);
@@ -177,6 +184,19 @@ public class MyPanel extends JPanel implements ActionListener {
             else if (selection == 1){
                 System.out.println("houses");
             }
+        }
+        else if(e.getSource() == websiteButton){
+            System.out.println("8888");
+            try{
+                if (selectedProperty != -1 && Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    Desktop.getDesktop().browse(new URI((String)currentProperties.get(selectedProperty).get("listing_url")));
+                }
+
+            }
+            catch(URISyntaxException | IOException exception){
+                JOptionPane.showMessageDialog(this, "Listing has an invalid website attached");
+            }
+
         }
         else if (e.getSource() == mapButton)
         {
