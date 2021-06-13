@@ -166,7 +166,24 @@ public class MyPanel extends JPanel implements ActionListener {
                 int maxPrice;
                 try{
                     maxPrice = Integer.parseInt(maxPriceString);
+                    JLabel loadingLabel = new JLabel("Fetching listings...");
+                    loadingLabel.setBounds(500,100,100,100);
+                    loadingLabel.setVisible(true);
+                    // Loading window
+                    JDialog jDialog = new JDialog();
+                    jDialog.setLayout(new GridBagLayout());
+                    jDialog.add(new JLabel("Fetching listings..."));
+                    jDialog.setMinimumSize(new Dimension(150, 50));
+                    jDialog.setResizable(false);
+                    jDialog.setModal(false);
+                    jDialog.setUndecorated(true);
+                    jDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+                    jDialog.setLocationRelativeTo(null);
+                    jDialog.setVisible(true);
+                    jDialog.revalidate();
+                    jDialog.paintComponents(jDialog.getGraphics());
                     airbnbPopulator(country, maxPrice);
+                    jDialog.dispose();
                     if(currentProperties.size() == 0){
                         JOptionPane.showMessageDialog(this, "No properties found matching your search. (Try a higher max price?)");
                     }
