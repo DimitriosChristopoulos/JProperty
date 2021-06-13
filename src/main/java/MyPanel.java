@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class MyPanel extends JPanel implements ActionListener {
     // Current properties shown
     ArrayList<Document> currentProperties = new ArrayList<>();
+    int selectedProperty = -1;
     // Panel related things
     JButton mainButton;
     JButton websiteButton;
@@ -42,7 +43,7 @@ public class MyPanel extends JPanel implements ActionListener {
         this.setLayout(null);
 
         // Adding scroll pane
-        scrollPanel = new ScrollPanel();
+        scrollPanel = new ScrollPanel(this);
         scrollPane = new JScrollPane(scrollPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -56,6 +57,10 @@ public class MyPanel extends JPanel implements ActionListener {
 
         // Final Panel Setup
         setVisible(true);
+    }
+
+    public void selectProperty(int index){
+        selectedProperty = index;
     }
 
     public void airbnbPopulator(String country, int maxPrice){

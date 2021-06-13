@@ -10,17 +10,14 @@ import java.util.ArrayList;
 public class ScrollPanel extends JPanel implements ActionListener {
 
     ArrayList<JButton> buttons = new ArrayList<>();
-
-    public ScrollPanel()
+    MyPanel parentPanel;
+    public ScrollPanel(MyPanel parentPanel)
     {
-
+        this.parentPanel = parentPanel;
         this.setSize(250,1600);
         this.setPreferredSize(new Dimension(250,1600));
 
         this.setLayout(null);
-
-
-
         // Final Panel Setup
         setVisible(true);
     }
@@ -43,6 +40,7 @@ public class ScrollPanel extends JPanel implements ActionListener {
             currentButton.setText((String)newProperties.get(i).get("name"));
             currentButton.setFocusable(false);
             currentButton.setActionCommand(Integer.toString(i));
+            currentButton.addActionListener(this);
             add(currentButton);
             buttons.add(currentButton);
         }
@@ -50,9 +48,9 @@ public class ScrollPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (buttons.contains(e.getSource())){
+        if(buttons.contains((JButton)e.getSource())){
             System.out.println(e.getActionCommand());
+            parentPanel.selectProperty(Integer.parseInt(e.getActionCommand()));
         }
-
     }
 }
