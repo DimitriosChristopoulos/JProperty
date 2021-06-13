@@ -186,7 +186,6 @@ public class MyPanel extends JPanel implements ActionListener {
             }
         }
         else if(e.getSource() == websiteButton){
-            System.out.println("8888");
             try{
                 if (selectedProperty != -1 && Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                     Desktop.getDesktop().browse(new URI((String)currentProperties.get(selectedProperty).get("listing_url")));

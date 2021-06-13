@@ -22,5 +22,7 @@ public class JProperty extends JFrame {
         setVisible(true);
     }
     public static void main(String[] args){
+        System.out.println("JProperty!");
+        JProperty mainInstance = new JProperty();
     }
 }
